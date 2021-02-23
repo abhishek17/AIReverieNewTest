@@ -20,21 +20,6 @@ AAIReverieRobot::AAIReverieRobot()
 
 }
 
-
-void AAIReverieRobot::EnsureCaptureActorReference()
-{
-	//If not found in the scene, instantiate a new actor
-	if (mSnapshotActor == nullptr)
-	{
-		//Instantiate view capture actor
-		FVector Location(0.0f, 0.0f, 89.f);
-		FRotator Rotation(0.0f, 0.0f, 0.0f);
-		FActorSpawnParameters SpawnInfo;
-
-		mSnapshotActor = GetWorld()->SpawnActor<AViewCapture>(AViewCapture::StaticClass(), Location, Rotation, SpawnInfo);
-	}
-}
-
 // Called when the game starts or when spawned
 void AAIReverieRobot::BeginPlay()
 {

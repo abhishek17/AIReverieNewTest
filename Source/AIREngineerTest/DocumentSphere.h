@@ -5,6 +5,7 @@
 
 #include "CoreMinimal.h"
 #include "RobotInstruction.h"
+#include "ViewCapture.h"
 #include "GameFramework/Actor.h"
 #include "DocumentSphere.generated.h"
 
@@ -48,12 +49,14 @@ protected:
 	void GetActorsInViewport(TArray<FString>& CurrentlyRenderedActors, FString& CombinedString);
 	bool SaveStringTextToFile(FString SaveDirectory, FString FileName, FString SaveText);
 	bool CreateDataDirectory(FString SaveDirectory);
+	void EnsureCaptureActorReference();
 
 	//Internal variables
 	FString	mGameSavedDataDir;
 	int mDataCaptureIndex;
 	TArray<FString> mActorsInViewport;
 	FString mActorsInViewportCombinedString;
+	AViewCapture* mSnapshotActor;
 
 };
 

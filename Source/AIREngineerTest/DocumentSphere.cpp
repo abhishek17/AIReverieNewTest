@@ -21,6 +21,20 @@ bool UDocumentSphere::ExecuteInstruction_Implementation(AAIReverieRobot* Pawn)
 }
 
 
+void UDocumentSphere::EnsureCaptureActorReference()
+{
+	//If not found in the scene, instantiate a new actor
+	if (mSnapshotActor == nullptr)
+	{
+		//Instantiate view capture actor
+		FVector Location(0.0f, 0.0f, 89.f);
+		FRotator Rotation(0.0f, 0.0f, 0.0f);
+		FActorSpawnParameters SpawnInfo;
+
+		mSnapshotActor = GetWorld()->SpawnActor<AViewCapture>(AViewCapture::StaticClass(), Location, Rotation, SpawnInfo);
+	}
+}
+
 //This function is responsible for capturing data, including a snapshot and a text file
 void UDocumentSphere::CaptureData(AAIReverieRobot* Pawn)
 {
@@ -170,13 +184,14 @@ void UDocumentSphere::DestroySphere()
 //Function to help with capturing snapshots as png files
 bool UDocumentSphere::CaptureSnapshot(int32 Resolution, FString Directory, FString Filename, AAIReverieRobot* Pawn)
 {
+	EnsureCaptureActorReference();
 	if (Pawn == nullptr)
 	{
 		UE_LOG(LogTemp, Display, TEXT("No Pawn available"));
 		return false;
 	}
 	//Capture and save the image
-	bool SuccessCapture = Pawn->GetViewCapture()->CapturePlayersView(Resolution, Directory, Filename, Pawn->GetActorLocation(), Pawn->GetActorRotation(), Pawn->GetCamera()->FieldOfView);
+	bool SuccessCapture = mSnapshotActor->CapturePlayersView(Resolution, Directory, Filename, Pawn->GetActorLocation(), Pawn->GetActorRotation(), Pawn->GetCamera()->FieldOfView);
 	if (SuccessCapture)
 	{
 		//Call the spawn sphere function, which will be implemented in the blueprints by a child class of snapshot robot

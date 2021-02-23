@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ViewCapture.h"
 #include "GameFramework/Pawn.h"
 #include "Components/StaticMeshComponent.h"
 #include "Camera/CameraComponent.h"
@@ -32,10 +31,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Camera")
 		UCameraComponent* mCamera;
 
-	//View capture actor
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Snapshot")
-		AViewCapture* mSnapshotActor;
-
 public:
 
 	// Called every frame
@@ -43,17 +38,8 @@ public:
 
 	// Called to bind functionality to input; Overriding it and keeping it empty so that inputs can`t move this robot pawn.
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	//Ensure existance of the capture actor
-	void EnsureCaptureActorReference();
 	
 	//Output getters
-	UFUNCTION(BlueprintCallable, Category = "Instructions")
-		AViewCapture* GetViewCapture()
-	{
-		EnsureCaptureActorReference();
-		return mSnapshotActor;
-	}
 
 	UFUNCTION(BlueprintCallable, Category = "Instructions")
 		UCameraComponent* GetCamera()
